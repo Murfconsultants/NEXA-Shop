@@ -1,0 +1,22 @@
+node_modules/
+dist/
+.next/
+out/
+
+# env files — copy from the committed .env.example in each project instead
+.env
+.env.local
+*.env
+
+# local dev-only data stores (FileStore / indexer progress)
+store.json
+orders.json
+progress.json
+
+# Foundry
+contracts/out/
+contracts/cache/
+contracts/broadcast/
+
+.DS_Store
+*.log

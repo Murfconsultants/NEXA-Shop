@@ -1,0 +1,20 @@
+{
+  "name": "NEXA",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:20",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "postCreateCommand": "curl -L https://foundry.paradigm.xyz | bash && ~/.foundry/bin/foundryup && bash setup.sh",
+  "forwardPorts": [3000, 3001, 4000, 5432],
+  "portsAttributes": {
+    "3000": { "label": "storefront" },
+    "3001": { "label": "admin" },
+    "4000": { "label": "backend" },
+    "5432": { "label": "postgres (docker-compose, optional)" }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode", "JuanBlanco.solidity"]
+    }
+  }
+}
