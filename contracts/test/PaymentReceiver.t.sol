@@ -67,7 +67,7 @@ contract PaymentReceiverTest is Test {
 
     function test_RevertWithoutApproval() public {
         vm.prank(buyer);
-        vm.expectRevert(PaymentReceiver.TransferFailed.selector);
+        vm.expectRevert(bytes("MockUSDC: insufficient allowance"));
         receiver.pay(ORDER_1, 1e6);
     }
 
