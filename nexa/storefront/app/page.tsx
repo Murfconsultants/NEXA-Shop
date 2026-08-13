@@ -1,7 +1,7 @@
 import { api } from "@/lib/api";
 import { ProductGrid } from "@/components/ProductGrid";
 
-export const revalidate = 30; // catalog doesn't need to be real-time
+export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const products = await api.listProducts();
