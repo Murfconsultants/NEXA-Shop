@@ -1,5 +1,5 @@
 {
   "builds": [{ "src": "api/index.ts", "use": "@vercel/node" }],
   "rewrites": [{ "source": "/(.*)", "destination": "/api/index" }],
-  "crons": [{ "path": "/api/cron/expire-orders", "schedule": "*/15 * * * *" }]
+  "crons": [{ "path": "/api/cron/expire-orders", "schedule": "0 3 * * *" }]
 }
