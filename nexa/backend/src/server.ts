@@ -1,4 +1,4 @@
-import { createApp } from "./app";
+import { createApp } from "./app.js";
 
 /**
  * Local/persistent-process entrypoint (`npm run dev` / `npm start`). Not

@@ -1,4 +1,4 @@
-import { createApp } from "../src/app";
+import { createApp } from "../src/app.js";
 
 // Vercel's Node runtime treats any exported (req, res) handler as the
 // function — an Express app is directly callable as one. Combined with the

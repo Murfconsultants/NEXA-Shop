@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
-import { type DataStore, formatUsdc } from "./storeInterface";
+import { type DataStore, formatUsdc } from "./storeInterface.js";
 import path from "path";
-import type { Order, OrderItem, Product } from "./types";
+import type { Order, OrderItem, Product } from "./types.js";
 
 interface FileShape {
   products: Record<string, Product>;

@@ -2,12 +2,12 @@ import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import { createStore } from "./store";
-import { productsRouter } from "./routes/products";
-import { ordersRouter } from "./routes/orders";
-import { adminRouter } from "./routes/admin";
-import { authRouter } from "./routes/auth";
-import { generalLimiter } from "./middleware/rateLimit";
+import { createStore } from "./store.js";
+import { productsRouter } from "./routes/products.js";
+import { ordersRouter } from "./routes/orders.js";
+import { adminRouter } from "./routes/admin.js";
+import { authRouter } from "./routes/auth.js";
+import { generalLimiter } from "./middleware/rateLimit.js";
 
 /**
  * Builds the Express app without calling `.listen()` or starting any

@@ -1,7 +1,7 @@
 import { Router } from "express";
-import type { DataStore } from "../store";
-import { requireApiKey } from "../middleware/auth";
-import { signCloudinaryUpload } from "../cloudinary";
+import type { DataStore } from "../store.js";
+import { requireApiKey } from "../middleware/auth.js";
+import { signCloudinaryUpload } from "../cloudinary.js";
 
 export function adminRouter(store: DataStore) {
   const router = Router();

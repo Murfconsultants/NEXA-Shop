@@ -1,4 +1,4 @@
-import type { Order, OrderItem, Product } from "./types";
+import type { Order, OrderItem, Product } from "./types.js";
 
 export interface DataStore {
   // Products

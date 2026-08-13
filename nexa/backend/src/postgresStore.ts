@@ -1,7 +1,7 @@
 import { Pool, type PoolClient } from "pg";
-import type { DataStore } from "./storeInterface";
-import type { Order, OrderItem, Product } from "./types";
-import { formatUsdc } from "./storeInterface";
+import type { DataStore } from "./storeInterface.js";
+import type { Order, OrderItem, Product } from "./types.js";
+import { formatUsdc } from "./storeInterface.js";
 
 function hexToBuffer(hex: string): Buffer {
   return Buffer.from(hex.replace(/^0x/, ""), "hex");

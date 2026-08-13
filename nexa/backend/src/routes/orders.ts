@@ -1,10 +1,10 @@
 import { Router } from "express";
-import type { DataStore } from "../store";
-import { generateOrderId } from "../orderId";
-import { requireApiKey } from "../middleware/auth";
-import { getSessionAddress } from "../session";
-import { sendOrderConfirmation } from "../email";
-import { sensitiveLimiter } from "../middleware/rateLimit";
+import type { DataStore } from "../store.js";
+import { generateOrderId } from "../orderId.js";
+import { requireApiKey } from "../middleware/auth.js";
+import { getSessionAddress } from "../session.js";
+import { sendOrderConfirmation } from "../email.js";
+import { sensitiveLimiter } from "../middleware/rateLimit.js";
 
 export function ordersRouter(store: DataStore) {
   const router = Router();

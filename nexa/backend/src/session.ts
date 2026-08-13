@@ -1,6 +1,6 @@
 import { randomUUID, createHmac } from "crypto";
 import type { Request, Response } from "express";
-import { getRedis } from "./redis";
+import { getRedis } from "./redis.js";
 
 const SESSION_COOKIE = "nexa_session";
 const SESSION_TTL_SECONDS = 7 * 24 * 60 * 60; // 7 days

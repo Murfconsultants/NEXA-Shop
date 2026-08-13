@@ -1,5 +1,5 @@
 import { Resend } from "resend";
-import type { Order } from "./types";
+import type { Order } from "./types.js";
 
 let client: Resend | null = null;
 

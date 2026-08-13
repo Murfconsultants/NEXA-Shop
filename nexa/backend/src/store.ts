@@ -1,6 +1,6 @@
-import type { DataStore } from "./storeInterface";
-import { FileStore } from "./fileStore";
-import { PostgresStore } from "./postgresStore";
+import type { DataStore } from "./storeInterface.js";
+import { FileStore } from "./fileStore.js";
+import { PostgresStore } from "./postgresStore.js";
 
 /**
  * Picks the storage backend based on env. Everything else in the app talks
@@ -31,4 +31,4 @@ export function createStore(): DataStore {
   return new FileStore();
 }
 
-export type { DataStore } from "./storeInterface";
+export type { DataStore } from "./storeInterface.js";

@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { SiweMessage } from "siwe";
-import { consumeNonce, createSession, destroySession, getSessionAddress, issueNonce } from "../session";
-import { sensitiveLimiter } from "../middleware/rateLimit";
+import { consumeNonce, createSession, destroySession, getSessionAddress, issueNonce } from "../session.js";
+import { sensitiveLimiter } from "../middleware/rateLimit.js";
 
 export function authRouter() {
   const router = Router();

@@ -1,4 +1,4 @@
-import { createStore } from "./store";
+import { createStore } from "./store.js";
 
 /** Run with: npx tsx src/seed.ts */
 async function main() {

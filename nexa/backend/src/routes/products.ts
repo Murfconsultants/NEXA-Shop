@@ -1,6 +1,6 @@
 import { Router } from "express";
-import type { DataStore } from "../store";
-import { requireApiKey } from "../middleware/auth";
+import type { DataStore } from "../store.js";
+import { requireApiKey } from "../middleware/auth.js";
 
 export function productsRouter(store: DataStore) {
   const router = Router();
