@@ -20,7 +20,7 @@ export function signCloudinaryUpload(params: Record<string, string | number>): {
   }
 
   const timestamp = Math.floor(Date.now() / 1000);
-  const toSign = { ...params, timestamp };
+  const toSign: Record<string, string | number> = { ...params, timestamp };
 
   // Cloudinary requires params sorted alphabetically by key, joined as
   // key=value&key=value, with the API secret appended (not URL-encoded).
