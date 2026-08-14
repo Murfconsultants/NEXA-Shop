@@ -60,17 +60,12 @@ export class PaymentIndexer {
 
     if (safeTip <= cursor) return;
 
-    let fromBlock = cursor + 1n;
+   let fromBlock = cursor + 1n;
     while (fromBlock <= safeTip) {
       const chunkEnd = fromBlock + config.maxBlockRange - 1n;
       const toBlock = chunkEnd > safeTip ? safeTip : chunkEnd;
 
-      const logs = await this.client.getLogs({
-        address: config.paymentReceiverAddress,
-        event: PAYMENT_RECEIVED_EVENT,
-        fromBlock,
-        toBlock,
-      });
+      const logs = await this.getLogsWithBackoff(fromBlock, toBlock);
 
       console.log(
         `[indexer] scanned blocks ${fromBlock}-${toBlock}, found ${logs.length} payment(s)`
@@ -82,9 +77,32 @@ export class PaymentIndexer {
 
       await this.store.setCursor(toBlock);
       fromBlock = toBlock + 1n;
+
       if (fromBlock <= safeTip) {
         await sleep(config.chunkDelayMs);
       }
+    }
+  }
+
+  private async getLogsWithBackoff(fromBlock: bigint, toBlock: bigint, attempt = 1): Promise<any[]> {
+    try {
+      return await this.client.getLogs({
+        address: config.paymentReceiverAddress,
+        event: PAYMENT_RECEIVED_EVENT,
+        fromBlock,
+        toBlock,
+      });
+    } catch (err: any) {
+      const isRateLimit =
+        err?.code === -32005 || /rate limit/i.test(err?.details ?? err?.message ?? "");
+      if (!isRateLimit || attempt >= 6) throw err;
+
+      const backoffMs = Math.min(config.chunkDelayMs * 2 ** attempt, 30_000);
+      console.warn(
+        `[indexer] rate limited on blocks ${fromBlock}-${toBlock}, retrying in ${backoffMs}ms (attempt ${attempt + 1})`
+      );
+      await sleep(backoffMs);
+      return this.getLogsWithBackoff(fromBlock, toBlock, attempt + 1);
     }
   }
 
