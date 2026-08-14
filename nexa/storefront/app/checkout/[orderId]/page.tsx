@@ -10,7 +10,7 @@ export default async function CheckoutPage({
   const order = await api.getOrder(orderId);
 
   return (
-    <main className="flex min-h-[calc(100vh-73px)] items-center justify-center p-4">
+    <main className="flex min-h-[calc(100vh-140px)] items-center justify-center p-6">
       <Checkout
         orderId={order.id}
         amount={BigInt(order.amount)}

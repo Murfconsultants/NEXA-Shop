@@ -7,9 +7,9 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
   const product = await api.getProduct(id);
 
   return (
-    <main className="mx-auto max-w-3xl px-6 py-8">
-      <div className="grid grid-cols-1 gap-8 sm:grid-cols-2">
-        <div className="relative aspect-square overflow-hidden rounded-lg bg-neutral-800">
+    <main className="mx-auto max-w-5xl px-6 py-12">
+      <div className="grid grid-cols-1 gap-12 sm:grid-cols-2">
+        <div className="relative aspect-square overflow-hidden bg-panel">
           {product.imageUrl && (
             <Image
               src={product.imageUrl}
@@ -20,10 +20,14 @@ export default async function ProductPage({ params }: { params: Promise<{ id: st
             />
           )}
         </div>
-        <div className="flex flex-col gap-4">
-          <h1 className="text-2xl font-semibold">{product.name}</h1>
-          <p className="text-neutral-400">{product.description}</p>
-          <div className="text-xl font-semibold">{formatUsdc(product.priceUsdc)} USDC</div>
+        <div className="flex flex-col gap-6">
+          <div>
+            <h1 className="font-display text-2xl font-medium tracking-tight">{product.name}</h1>
+            <p className="mt-3 text-slate">{product.description}</p>
+          </div>
+          <div className="font-display text-2xl tabular">
+            {formatUsdc(product.priceUsdc)} <span className="text-base text-slate">USDC</span>
+          </div>
           <AddToCart product={product} />
         </div>
       </div>

@@ -16,19 +16,19 @@ export function ProductGrid({ products }: { products: ApiProduct[] }) {
   }, [products, query]);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-8">
       <input
         type="search"
         placeholder="Search products…"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        className="w-full max-w-sm rounded-md border border-neutral-700 bg-neutral-900 px-3 py-2 text-sm"
+        className="w-full max-w-sm border border-hairline bg-panel px-4 py-2.5 text-sm placeholder:text-slate focus:border-settle"
       />
 
       {filtered.length === 0 ? (
-        <p className="text-sm text-neutral-500">No products match "{query}".</p>
+        <p className="text-sm text-slate">No products match &ldquo;{query}&rdquo;.</p>
       ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-px border border-hairline bg-hairline sm:grid-cols-3">
           {filtered.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}

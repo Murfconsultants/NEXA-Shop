@@ -53,7 +53,7 @@ export function SiweButton() {
 
   if (sessionAddress) {
     return (
-      <button onClick={handleSignOut} className="text-xs text-neutral-400 underline">
+      <button onClick={handleSignOut} className="text-xs text-slate underline hover:text-paper">
         Signed in as {sessionAddress.slice(0, 6)}…{sessionAddress.slice(-4)} — sign out
       </button>
     );
@@ -64,7 +64,7 @@ export function SiweButton() {
       <button
         onClick={handleSignIn}
         disabled={loading}
-        className="rounded-md bg-neutral-800 px-3 py-1.5 text-xs font-medium hover:bg-neutral-700 disabled:opacity-50"
+        className="border border-hairline px-3 py-1.5 text-xs font-medium transition-colors hover:border-settle hover:text-settle disabled:opacity-50"
       >
         {loading ? "Check your wallet…" : "Sign in with Ethereum"}
       </button>

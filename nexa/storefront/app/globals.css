@@ -2,7 +2,43 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --ink: #0a0e13;
+  --panel: #12181f;
+  --hairline: #232b36;
+  --paper: #ecedee;
+  --slate: #8892a0;
+  --settle: #1fa97a;
+}
+
 html,
 body {
-  background-color: #171717;
+  background-color: var(--ink);
+  color: var(--paper);
+}
+
+* {
+  border-color: var(--hairline);
+}
+
+/* Visible keyboard focus everywhere, not just on inputs */
+:focus-visible {
+  outline: 2px solid var(--settle);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Tabular numerals for prices/amounts so digits don't jitter in width */
+.tabular {
+  font-variant-numeric: tabular-nums;
 }
