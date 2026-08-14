@@ -18,6 +18,7 @@ export const config = {
   // Block to start indexing from if we have no prior progress on record —
   // set this to the deployment block of PaymentReceiver to avoid scanning from genesis.
   startBlock: BigInt(process.env.START_BLOCK ?? "0"),
+  maxBlockRange: BigInt(process.env.MAX_BLOCK_RANGE ?? "2000"),
   // The backend API this indexer reports settled payments to.
   backendUrl: required("BACKEND_URL"),
   indexerApiKey: required("INDEXER_API_KEY"),

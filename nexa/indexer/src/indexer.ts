@@ -58,27 +58,31 @@ export class PaymentIndexer {
       cursor = config.startBlock;
     }
 
-    if (safeTip <= cursor) return; // nothing new past the confirmation depth yet
+    if (safeTip <= cursor) return;
 
-    const fromBlock = cursor + 1n;
-    const toBlock = safeTip;
+    let fromBlock = cursor + 1n;
+    while (fromBlock <= safeTip) {
+      const chunkEnd = fromBlock + config.maxBlockRange - 1n;
+      const toBlock = chunkEnd > safeTip ? safeTip : chunkEnd;
 
-    const logs = await this.client.getLogs({
-      address: config.paymentReceiverAddress,
-      event: PAYMENT_RECEIVED_EVENT,
-      fromBlock,
-      toBlock,
-    });
+      const logs = await this.client.getLogs({
+        address: config.paymentReceiverAddress,
+        event: PAYMENT_RECEIVED_EVENT,
+        fromBlock,
+        toBlock,
+      });
 
-    console.log(
-      `[indexer] scanned blocks ${fromBlock}-${toBlock}, found ${logs.length} payment(s)`
-    );
+      console.log(
+        `[indexer] scanned blocks ${fromBlock}-${toBlock}, found ${logs.length} payment(s)`
+      );
 
-    for (const log of logs) {
-      await this.processLog(log);
+      for (const log of logs) {
+        await this.processLog(log);
+      }
+
+      await this.store.setCursor(toBlock);
+      fromBlock = toBlock + 1n;
     }
-
-    await this.store.setCursor(toBlock);
   }
 
   private async processLog(log: {
