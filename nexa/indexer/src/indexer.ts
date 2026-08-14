@@ -82,6 +82,9 @@ export class PaymentIndexer {
 
       await this.store.setCursor(toBlock);
       fromBlock = toBlock + 1n;
+      if (fromBlock <= safeTip) {
+        await sleep(config.chunkDelayMs);
+      }
     }
   }
 
