@@ -2,6 +2,10 @@ const webpack = require("webpack");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // A stray package-lock.json at the repo root (outside this project)
+  // otherwise makes Next.js guess the wrong workspace root — pin it
+  // explicitly instead of relying on inference.
+  outputFileTracingRoot: __dirname,
   images: {
     remotePatterns: [
       {

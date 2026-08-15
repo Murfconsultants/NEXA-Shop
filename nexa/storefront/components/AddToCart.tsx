@@ -12,26 +12,28 @@ export function AddToCart({ product }: { product: ApiProduct }) {
   const missingSelection = (product.variants ?? []).some((group) => !selected[group.name]);
 
   return (
-    <div className="flex flex-col gap-5">
+    <div className="flex flex-col gap-6">
       {product.variants?.map((group) => (
         <div key={group.name} className="flex flex-col gap-2">
-          <span className="font-display text-xs tracking-widest text-slate">
-            {group.name.toUpperCase()}
-          </span>
+          <span className="text-caption uppercase tracking-wide text-muted">{group.name}</span>
           <div className="flex flex-wrap gap-2">
-            {group.options.map((option) => (
-              <button
-                key={option}
-                onClick={() => setSelected((s) => ({ ...s, [group.name]: option }))}
-                className={`border px-3 py-1.5 text-sm transition-colors ${
-                  selected[group.name] === option
-                    ? "border-settle text-settle"
-                    : "border-hairline text-paper hover:border-slate"
-                }`}
-              >
-                {option}
-              </button>
-            ))}
+            {group.options.map((option) => {
+              const isSelected = selected[group.name] === option;
+              return (
+                <button
+                  key={option}
+                  onClick={() => setSelected((s) => ({ ...s, [group.name]: option }))}
+                  style={{ height: 28 }}
+                  className={`border px-4 text-body-sm transition-colors ${
+                    isSelected
+                      ? "border-fg bg-fg text-bg"
+                      : "border-border text-fg hover:border-border-hover"
+                  }`}
+                >
+                  {option}
+                </button>
+              );
+            })}
           </div>
         </div>
       ))}
@@ -48,7 +50,8 @@ export function AddToCart({ product }: { product: ApiProduct }) {
           setAdded(true);
           setTimeout(() => setAdded(false), 1500);
         }}
-        className="w-full bg-settle px-4 py-3 text-sm font-medium text-ink transition-colors hover:bg-settle/90 disabled:cursor-not-allowed disabled:bg-panel disabled:text-slate"
+        style={{ height: 48 }}
+        className="w-full bg-fg px-8 text-body font-medium text-bg transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-30"
       >
         {product.inventory === 0 ? "Out of stock" : added ? "Added" : "Add to cart"}
       </button>

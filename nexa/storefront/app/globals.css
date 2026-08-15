@@ -2,28 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+/* StudioBlank tokens — light is default, dark applied via [data-theme="dark"] */
 :root {
-  --ink: #0a0e13;
-  --panel: #12181f;
-  --hairline: #232b36;
-  --paper: #ecedee;
-  --slate: #8892a0;
-  --settle: #1fa97a;
+  --bg: #fafafa;
+  --surface: #ffffff;
+  --fg: #0a0a0a;
+  --muted: #71717a;
+  --border: #d4d4d8;
+  --border-hover: #a1a1aa;
+  --success: #16a34a;
+  --warning: #ca8a04;
+  --error: #dc2626;
+}
+
+[data-theme="dark"] {
+  --bg: #0a0a0a;
+  --surface: #141414;
+  --fg: #fafafa;
+  --muted: #a1a1aa;
+  --border: #27272a;
+  --border-hover: #3f3f46;
 }
 
 html,
 body {
-  background-color: var(--ink);
-  color: var(--paper);
+  background-color: var(--bg);
+  color: var(--fg);
 }
 
 * {
-  border-color: var(--hairline);
+  border-color: var(--border);
 }
 
-/* Visible keyboard focus everywhere, not just on inputs */
+/* No shadows anywhere, per the design system — focus uses an offset border instead of a ring shadow */
 :focus-visible {
-  outline: 2px solid var(--settle);
+  outline: 2px solid var(--fg);
   outline-offset: 2px;
 }
 
@@ -38,7 +51,6 @@ body {
   }
 }
 
-/* Tabular numerals for prices/amounts so digits don't jitter in width */
 .tabular {
   font-variant-numeric: tabular-nums;
 }

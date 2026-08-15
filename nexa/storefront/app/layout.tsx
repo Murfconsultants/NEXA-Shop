@@ -1,31 +1,35 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Work_Sans } from "next/font/google";
+import { Inter, IBM_Plex_Mono } from "next/font/google";
 import { Providers } from "./providers/Providers";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ThemeScript } from "@/components/ThemeScript";
 import "./globals.css";
 
-const mono = JetBrains_Mono({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-mono",
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-inter",
 });
 
-const sans = Work_Sans({
+const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-sans",
+  weight: ["400", "500"],
+  variable: "--font-plex-mono",
 });
 
 export const metadata: Metadata = {
-  title: "NEXA — goods, settled in USDC",
-  description: "A store that settles in real USDC, finalized on Arc.",
+  title: "NEXA",
+  description: "Goods, settled in USDC.",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${mono.variable} ${sans.variable}`}>
-      <body className="font-body bg-ink text-paper">
+    <html lang="en" className={`${inter.variable} ${plexMono.variable}`} suppressHydrationWarning>
+      <head>
+        <ThemeScript />
+      </head>
+      <body className="font-sans bg-bg text-fg">
         <Providers>
           <Header />
           {children}

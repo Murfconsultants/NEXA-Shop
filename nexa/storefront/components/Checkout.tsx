@@ -7,7 +7,7 @@ import { useCheckout } from "@/hooks/useCheckout";
 import { useUsdcBalance } from "@/hooks/useUsdcBalance";
 import { arcTestnet } from "@/lib/chains";
 import { USDC_DECIMALS } from "@/lib/contracts";
-import { ReceiptStrip } from "./ReceiptStrip";
+import { StatusChip, toneForStatus } from "./StatusChip";
 
 interface CheckoutProps {
   orderId: `0x${string}`;
@@ -22,7 +22,7 @@ const STATUS_LABEL: Record<string, string> = {
   approving: "Confirming approval",
   "ready-to-pay": "Ready",
   paying: "Confirming payment",
-  paid: "Settled",
+  paid: "Paid",
   error: "Error",
 };
 
@@ -36,29 +36,27 @@ export function Checkout({ orderId, amount, displayAmount }: CheckoutProps) {
   const insufficientBalance = balance !== undefined && balance < amount;
 
   return (
-    <div className="mx-auto flex w-full max-w-sm flex-col gap-6 border border-hairline bg-panel p-8">
-      <div className="border border-amber-900/60 bg-amber-950/30 px-3 py-2 text-xs text-amber-400">
+    <div className="mx-auto flex w-full max-w-sm flex-col gap-6 border border-border bg-surface p-8">
+      <div className="border border-warning px-3 py-2 text-caption text-warning">
         Arc Testnet — this is test USDC, not real funds.
       </div>
 
-      <div>
-        <span className="font-display text-xs tracking-widest text-slate">TOTAL DUE</span>
-        <div className="mt-1 font-display text-3xl tabular">
-          {displayAmount} <span className="text-base text-slate">USDC</span>
-        </div>
+      <div className="flex flex-col gap-2">
+        <span className="text-caption uppercase tracking-wide text-muted">Total due</span>
+        <span className="font-mono text-h2 tabular">{displayAmount} USDC</span>
       </div>
 
-      <ReceiptStrip
-        items={[
-          { label: "ORDER", value: `${orderId.slice(0, 8)}…${orderId.slice(-6)}` },
-          { label: "NETWORK", value: "Arc Testnet" },
-          { label: "STATUS", value: STATUS_LABEL[status] ?? status, emphasize: status === "paid" },
-        ]}
-      />
+      <div className="flex items-center justify-between border-t border-border pt-4">
+        <span className="font-mono text-caption tabular text-muted">
+          {orderId.slice(0, 8)}…{orderId.slice(-6)}
+        </span>
+        <StatusChip label={STATUS_LABEL[status] ?? status} tone={toneForStatus(status)} />
+      </div>
 
       {!isConnected && <ConnectButton />}
+
       {isConnected && wrongNetwork && (
-        <div className="border border-red-900 bg-red-950/40 px-3 py-2 text-sm text-red-400">
+        <div className="border border-error px-3 py-2 text-body-sm text-error">
           Wrong network — switch your wallet to Arc Testnet to continue.
         </div>
       )}
@@ -66,16 +64,14 @@ export function Checkout({ orderId, amount, displayAmount }: CheckoutProps) {
       {isConnected && !wrongNetwork && (
         <>
           {balance !== undefined && (
-            <div className="flex items-center justify-between text-sm">
-              <span className="text-slate">Your balance</span>
-              <span className="font-display tabular">
-                {formatUnits(balance, USDC_DECIMALS)} USDC
-              </span>
+            <div className="flex items-center justify-between text-body-sm">
+              <span className="text-muted">Your balance</span>
+              <span className="font-mono tabular">{formatUnits(balance, USDC_DECIMALS)} USDC</span>
             </div>
           )}
 
           {insufficientBalance && status !== "paid" && (
-            <div className="border border-red-900 bg-red-950/40 px-3 py-2 text-sm text-red-400">
+            <div className="border border-error px-3 py-2 text-body-sm text-error">
               Insufficient USDC balance. Get test funds from{" "}
               <a href="https://faucet.circle.com" target="_blank" rel="noreferrer" className="underline">
                 faucet.circle.com
@@ -84,34 +80,32 @@ export function Checkout({ orderId, amount, displayAmount }: CheckoutProps) {
             </div>
           )}
 
-          {status === "checking-allowance" && <StatusButton disabled>Checking allowance…</StatusButton>}
+          {status === "checking-allowance" && <ActionButton disabled>Checking allowance…</ActionButton>}
 
           {status === "needs-approval" && (
-            <StatusButton onClick={approve} disabled={insufficientBalance}>
+            <ActionButton onClick={approve} disabled={insufficientBalance}>
               Approve {displayAmount} USDC
-            </StatusButton>
+            </ActionButton>
           )}
 
-          {status === "approving" && <StatusButton disabled>Confirming approval…</StatusButton>}
+          {status === "approving" && <ActionButton disabled>Confirming approval…</ActionButton>}
 
           {status === "ready-to-pay" && (
-            <StatusButton onClick={pay} disabled={insufficientBalance}>
+            <ActionButton onClick={pay} disabled={insufficientBalance}>
               Pay {displayAmount} USDC
-            </StatusButton>
+            </ActionButton>
           )}
 
-          {status === "paying" && <StatusButton disabled>Confirming payment…</StatusButton>}
+          {status === "paying" && <ActionButton disabled>Confirming payment…</ActionButton>}
 
           {status === "paid" && (
-            <div className="border border-settle/40 bg-settle/10 px-4 py-4 text-center text-sm text-settle">
+            <div className="border border-success px-4 py-4 text-center text-body-sm text-success">
               Payment confirmed — order is being processed.
             </div>
           )}
 
           {status === "error" && error && (
-            <div className="border border-red-900 bg-red-950/40 px-3 py-2 text-sm text-red-400">
-              {error}
-            </div>
+            <div className="border border-error px-3 py-2 text-body-sm text-error">{error}</div>
           )}
 
           {explorerTxUrl && (
@@ -119,7 +113,7 @@ export function Checkout({ orderId, amount, displayAmount }: CheckoutProps) {
               href={explorerTxUrl}
               target="_blank"
               rel="noreferrer"
-              className="text-center text-xs text-slate underline hover:text-paper"
+              className="text-center text-caption text-muted underline hover:text-fg"
             >
               View transaction on ArcScan
             </a>
@@ -130,7 +124,7 @@ export function Checkout({ orderId, amount, displayAmount }: CheckoutProps) {
   );
 }
 
-function StatusButton({
+function ActionButton({
   children,
   onClick,
   disabled,
@@ -143,7 +137,8 @@ function StatusButton({
     <button
       onClick={onClick}
       disabled={disabled || !onClick}
-      className="w-full bg-settle px-4 py-3 text-sm font-medium text-ink transition-colors hover:bg-settle/90 disabled:cursor-not-allowed disabled:bg-ink disabled:text-slate"
+      style={{ height: 48 }}
+      className="w-full bg-fg px-8 text-body font-medium text-bg transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-30"
     >
       {children}
     </button>

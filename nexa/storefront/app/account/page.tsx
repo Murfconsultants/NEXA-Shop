@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { api, formatUsdc, type ApiOrder } from "@/lib/api";
+import { StatusChip, toneForStatus } from "@/components/StatusChip";
 
 export const dynamic = "force-dynamic";
 
@@ -22,17 +23,17 @@ export default function AccountPage() {
 
   if (signedIn === null) {
     return (
-      <main className="mx-auto max-w-2xl px-6 py-12">
-        <p className="text-sm text-slate">Loading…</p>
+      <main className="mx-auto max-w-2xl px-4 py-16">
+        <p className="text-body-sm text-muted">Loading…</p>
       </main>
     );
   }
 
   if (!signedIn) {
     return (
-      <main className="mx-auto max-w-2xl px-6 py-12">
-        <h1 className="mb-2 font-display text-sm tracking-widest text-slate">ORDER HISTORY</h1>
-        <p className="text-sm text-slate">
+      <main className="mx-auto max-w-2xl px-4 py-16">
+        <h1 className="mb-2 text-h3">Order history</h1>
+        <p className="text-body-sm text-muted">
           Sign in with Ethereum (top right) to see your past orders.
         </p>
       </main>
@@ -40,42 +41,27 @@ export default function AccountPage() {
   }
 
   return (
-    <main className="mx-auto max-w-2xl px-6 py-12">
-      <h1 className="mb-6 font-display text-sm tracking-widest text-slate">ORDER HISTORY</h1>
+    <main className="mx-auto max-w-2xl px-4 py-16">
+      <h1 className="mb-13 text-h3">Order history</h1>
       {orders && orders.length === 0 ? (
-        <p className="text-sm text-slate">No orders yet.</p>
+        <p className="text-body-sm text-muted">No orders yet.</p>
       ) : (
         <div className="flex flex-col">
           {orders?.map((order) => (
             <Link
               key={order.id}
               href={`/checkout/${order.id}`}
-              className="flex items-center justify-between border-b border-hairline py-4 text-sm transition-colors hover:bg-panel"
+              className="flex min-h-[48px] items-center justify-between gap-4 border-b border-border py-3 text-body-sm transition-colors hover:bg-surface"
             >
-              <span className="font-display text-xs tabular text-slate">
+              <span className="font-mono text-caption tabular text-muted">
                 {order.id.slice(0, 10)}…{order.id.slice(-6)}
               </span>
-              <span className="font-display tabular">{formatUsdc(order.amount)} USDC</span>
-              <StatusPill status={order.status} />
+              <span className="font-mono tabular">{formatUsdc(order.amount)} USDC</span>
+              <StatusChip label={order.status} tone={toneForStatus(order.status)} />
             </Link>
           ))}
         </div>
       )}
     </main>
-  );
-}
-
-function StatusPill({ status }: { status: ApiOrder["status"] }) {
-  const styles: Record<ApiOrder["status"], string> = {
-    pending: "text-slate",
-    paid: "text-settle",
-    underpaid: "text-red-400",
-    overpaid: "text-amber-400",
-    cancelled: "text-slate",
-  };
-  return (
-    <span className={`font-display text-xs tracking-wide ${styles[status]}`}>
-      {status.toUpperCase()}
-    </span>
   );
 }
