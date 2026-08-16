@@ -9,8 +9,12 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
+        // The admin dashboard's image field accepts any URL (Cloudinary
+        // upload, or a pasted URL from anywhere — e.g. Imgur), so this
+        // can't be locked to one host. Restricting it to res.cloudinary.com
+        // broke every image added via the "paste a URL" fallback.
         protocol: "https",
-        hostname: "res.cloudinary.com",
+        hostname: "**",
       },
     ],
   },
