@@ -10,8 +10,8 @@ export function Footer() {
   return (
     <footer style={{ backgroundColor: "#0A0A0A", color: "#FAFAFA" }}>
       <div className="mx-auto flex max-w-5xl flex-col gap-3 px-3 py-5 text-caption sm:flex-row sm:items-center sm:justify-between">
-        <div className="relative h-8 w-[130px]">
-          <Image src="/nexa-logo.png" alt="NEXA" fill sizes="130px" className="object-contain object-left" />
+        <div className="relative h-5 w-[80px]">
+          <Image src="/nexa-logo.png" alt="NEXA" fill sizes="80px" className="object-contain object-left" />
         </div>
         <span className="font-mono" style={{ color: "#71717A" }}>
           Arc Testnet · USDC · settled on-chain

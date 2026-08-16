@@ -2,6 +2,8 @@ import Image from "next/image";
 import { api, formatUsdc } from "@/lib/api";
 import { AddToCart } from "@/components/AddToCart";
 
+export const dynamic = "force-dynamic";
+
 export default async function ProductPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const product = await api.getProduct(id);

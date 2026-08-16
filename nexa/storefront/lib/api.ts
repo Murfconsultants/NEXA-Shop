@@ -24,6 +24,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const res = await fetch(`${BACKEND_URL}${path}`, {
     ...init,
     credentials: "include", // send/receive the SIWE session cookie
+    cache: "no-store", // never let Next.js's Data Cache serve stale product/order data
     headers: { "Content-Type": "application/json", ...init?.headers },
   });
   if (!res.ok) throw new Error(`Request failed (${res.status}): ${await res.text()}`);
