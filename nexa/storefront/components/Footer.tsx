@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 // "Surface Inverse (#0A0A0A): Dark sections, footer" — the doc names the
 // footer as an explicit Surface Inverse context, independent of the site's
 // light/dark toggle (which is this project's own addition, not in the doc).
@@ -8,7 +10,9 @@ export function Footer() {
   return (
     <footer style={{ backgroundColor: "#0A0A0A", color: "#FAFAFA" }}>
       <div className="mx-auto flex max-w-5xl flex-col gap-3 px-3 py-5 text-caption sm:flex-row sm:items-center sm:justify-between">
-        <span className="text-h3">NEXA</span>
+        <div className="relative h-8 w-[130px]">
+          <Image src="/nexa-logo.png" alt="NEXA" fill sizes="130px" className="object-contain object-left" />
+        </div>
         <span className="font-mono" style={{ color: "#71717A" }}>
           Arc Testnet · USDC · settled on-chain
         </span>

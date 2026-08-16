@@ -26,6 +26,16 @@ export async function updateInventory(productId: string, formData: FormData) {
   revalidatePath("/products");
 }
 
+/**
+ * Called directly (not via a <form>) from ProductImageEditor's onChange —
+ * Next.js server actions can be invoked as plain async functions from
+ * client components, not just as a form's `action` prop.
+ */
+export async function updateProductImage(productId: string, imageUrl: string) {
+  await api.updateProduct(productId, { imageUrl });
+  revalidatePath("/products");
+}
+
 export async function deleteProduct(productId: string) {
   await api.deleteProduct(productId);
   revalidatePath("/products");

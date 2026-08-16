@@ -1,6 +1,7 @@
 import { api, formatUsdc } from "@/lib/api";
 import { deleteProduct, updateInventory, createProduct } from "./actions";
 import { ProductForm } from "@/components/ProductForm";
+import { ProductImageEditor } from "@/components/ProductImageEditor";
 
 export default async function ProductsPage() {
   const products = await api.listProducts();
@@ -8,8 +9,9 @@ export default async function ProductsPage() {
   return (
     <div className="flex flex-col gap-8">
       <h1 className="text-xl font-semibold">Products</h1>
+      <p className="-mt-4 text-xs text-neutral-500">Click a thumbnail to upload or change its image.</p>
 
-      <div className="overflow-hidden rounded-lg border border-neutral-800">
+      <div className="overflow-visible rounded-lg border border-neutral-800">
         <table className="w-full text-left text-sm">
           <thead className="bg-neutral-900 text-neutral-400">
             <tr>
@@ -24,12 +26,7 @@ export default async function ProductsPage() {
             {products.map((product) => (
               <tr key={product.id} className="border-t border-neutral-800">
                 <td className="px-4 py-2">
-                  {product.imageUrl ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={product.imageUrl} alt="" className="h-10 w-10 rounded-md object-cover" />
-                  ) : (
-                    <div className="h-10 w-10 rounded-md bg-neutral-800" />
-                  )}
+                  <ProductImageEditor productId={product.id} imageUrl={product.imageUrl} />
                 </td>
                 <td className="px-4 py-2">
                   <div>{product.name}</div>

@@ -15,14 +15,18 @@ export function Header() {
   return (
     <header className="border-b border-border">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-3 py-3">
-        <Link href="/" className="relative block h-9 w-[130px]">
+        <Link
+          href="/"
+          className="relative block h-9 w-[140px] shrink-0"
+          style={{ backgroundColor: "#0A0A0A" }}
+        >
           <Image
             src="/nexa-logo.png"
             alt="NEXA"
             fill
-            sizes="130px"
+            sizes="140px"
             priority
-            className="object-contain object-left"
+            className="object-contain object-left px-2"
           />
         </Link>
         <nav className="flex items-center gap-3">
