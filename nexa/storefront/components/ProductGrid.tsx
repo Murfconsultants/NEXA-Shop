@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { ProductCard } from "./ProductCard";
+import { Input } from "./Input";
 import type { ApiProduct } from "@/lib/api";
 
 export function ProductGrid({ products }: { products: ApiProduct[] }) {
@@ -16,20 +17,19 @@ export function ProductGrid({ products }: { products: ApiProduct[] }) {
   }, [products, query]);
 
   return (
-    <div className="flex flex-col gap-13">
-      <input
+    <div className="flex flex-col gap-6">
+      <Input
         type="search"
         placeholder="Search products…"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
-        style={{ height: 40 }}
-        className="w-full max-w-sm border border-border bg-surface px-3 text-body-sm text-fg placeholder:text-muted focus:border-fg"
+        className="w-full max-w-sm"
       />
 
       {filtered.length === 0 ? (
-        <p className="text-body-sm text-muted">No products match &ldquo;{query}&rdquo;.</p>
+        <p className="text-body-sm font-normal text-muted">No products match &ldquo;{query}&rdquo;.</p>
       ) : (
-        <div className="grid grid-cols-2 gap-8 sm:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
           {filtered.map((p) => (
             <ProductCard key={p.id} product={p} />
           ))}

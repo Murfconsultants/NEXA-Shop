@@ -1,18 +1,15 @@
 "use client";
 
 import { useTheme } from "@/lib/theme";
+import { Button } from "./Button";
 
+// Secondary variant: "transparent fill, #0A0A0A text, 1px #0A0A0A border."
 export function ThemeToggle() {
   const { theme, toggle } = useTheme();
 
   return (
-    <button
-      onClick={toggle}
-      aria-label="Toggle color theme"
-      className="border border-border px-4 text-body-sm text-fg transition-colors hover:border-border-hover"
-      style={{ height: 32 }}
-    >
+    <Button variant="secondary" size="small" onClick={toggle} aria-label="Toggle color theme">
       {theme === "dark" ? "Light" : "Dark"}
-    </button>
+    </Button>
   );
 }

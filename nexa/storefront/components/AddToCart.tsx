@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useCart } from "@/lib/cart";
 import type { ApiProduct } from "@/lib/api";
+import { FilterChip } from "./Chip";
+import { Button } from "./Button";
 
 export function AddToCart({ product }: { product: ApiProduct }) {
   const add = useCart((s) => s.add);
@@ -12,33 +14,28 @@ export function AddToCart({ product }: { product: ApiProduct }) {
   const missingSelection = (product.variants ?? []).some((group) => !selected[group.name]);
 
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-4">
       {product.variants?.map((group) => (
         <div key={group.name} className="flex flex-col gap-2">
-          <span className="text-caption uppercase tracking-wide text-muted">{group.name}</span>
+          <span className="text-caption font-normal uppercase tracking-wider text-muted">
+            {group.name}
+          </span>
           <div className="flex flex-wrap gap-2">
-            {group.options.map((option) => {
-              const isSelected = selected[group.name] === option;
-              return (
-                <button
-                  key={option}
-                  onClick={() => setSelected((s) => ({ ...s, [group.name]: option }))}
-                  style={{ height: 28 }}
-                  className={`border px-4 text-body-sm transition-colors ${
-                    isSelected
-                      ? "border-fg bg-fg text-bg"
-                      : "border-border text-fg hover:border-border-hover"
-                  }`}
-                >
-                  {option}
-                </button>
-              );
-            })}
+            {group.options.map((option) => (
+              <FilterChip
+                key={option}
+                label={option}
+                state={selected[group.name] === option ? "selected" : "default"}
+                onClick={() => setSelected((s) => ({ ...s, [group.name]: option }))}
+              />
+            ))}
           </div>
         </div>
       ))}
 
-      <button
+      <Button
+        variant="primary"
+        size="large"
         disabled={product.inventory === 0 || missingSelection}
         onClick={() => {
           add({
@@ -50,11 +47,10 @@ export function AddToCart({ product }: { product: ApiProduct }) {
           setAdded(true);
           setTimeout(() => setAdded(false), 1500);
         }}
-        style={{ height: 48 }}
-        className="w-full bg-fg px-8 text-body font-medium text-bg transition-opacity hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-30"
+        className="w-full"
       >
         {product.inventory === 0 ? "Out of stock" : added ? "Added" : "Add to cart"}
-      </button>
+      </Button>
     </div>
   );
 }

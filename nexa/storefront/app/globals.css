@@ -2,26 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-/* StudioBlank tokens — light is default, dark applied via [data-theme="dark"] */
+/*
+ * Every value below is copied verbatim from studioblank-design-system-DESIGN.md.
+ * Light mode uses the doc's literal hexes. Dark mode is derived by swapping
+ * only the two pairs the doc itself defines as opposites — Color Primary
+ * (#0A0A0A) <-> Color Secondary (#FAFAFA), and Surface Base (#FAFAFA) <->
+ * Surface Inverse (#0A0A0A) — "Surface Inverse: Dark sections, footer" is
+ * the doc's own name for exactly this case. Every other value (borders,
+ * Color Info, status colors) has no dark alternate specified in the doc, so
+ * it stays byte-identical in both modes rather than inventing a new hex.
+ */
 :root {
-  --bg: #fafafa;
-  --surface: #ffffff;
-  --fg: #0a0a0a;
-  --muted: #71717a;
-  --border: #d4d4d8;
-  --border-hover: #a1a1aa;
+  --bg: #fafafa;           /* Surface Base — page background */
+  --surface: #ffffff;      /* Card fill / Input default fill */
+  --fg: #0a0a0a;            /* Color Primary — primary text, actions */
+  --fg-inverse: #fafafa;    /* Color Secondary — text on a Primary-filled surface */
+  --border: #d4d4d8;        /* Color Tertiary — subtle dividers, borders */
+  --border-card: #e5e5e5;   /* Card border (distinct from Tertiary) */
+  --border-hover: #a1a1aa;  /* Input hover border / Filter Chip hover border */
+  --muted: #71717a;         /* Color Info */
+  --divider-list: #f4f4f5;  /* List divider */
+  --hover-bg: #f4f4f5;      /* List hover bg / Filter Chip hover fill / Archived Chip bg */
+  --disabled-border: #e5e5e5; /* Input disabled border / Checkbox & Radio disabled border */
+  --disabled-bg: #f4f4f5;     /* Input disabled fill */
+  --archived-text: #a1a1aa;   /* Status Chip Archived text */
   --success: #16a34a;
   --warning: #ca8a04;
   --error: #dc2626;
 }
 
 [data-theme="dark"] {
-  --bg: #0a0a0a;
-  --surface: #141414;
-  --fg: #fafafa;
-  --muted: #a1a1aa;
-  --border: #27272a;
-  --border-hover: #3f3f46;
+  --bg: #0a0a0a;             /* Surface Inverse */
+  --surface: #0a0a0a;        /* no separate elevated-surface hex in the doc; cards are
+                                 distinguished by border only, per the doc's own Elevation
+                                 principle: "Depth is communicated exclusively through
+                                 layering, spacing, and border contrast." */
+  --fg: #fafafa;             /* Color Secondary */
+  --fg-inverse: #0a0a0a;     /* Color Primary */
+  /* everything else is unchanged — the doc gives no dark alternates for these */
 }
 
 html,
@@ -34,7 +52,7 @@ body {
   border-color: var(--border);
 }
 
-/* No shadows anywhere, per the design system — focus uses an offset border instead of a ring shadow */
+/* "Focus states use a 2px border offset rather than a box-shadow ring." */
 :focus-visible {
   outline: 2px solid var(--fg);
   outline-offset: 2px;

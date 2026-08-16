@@ -5,6 +5,7 @@ import { useAccount, useSignMessage } from "wagmi";
 import { SiweMessage } from "siwe";
 import { api } from "@/lib/api";
 import { arcTestnet } from "@/lib/chains";
+import { Button } from "./Button";
 
 export function SiweButton() {
   const { address, isConnected } = useAccount();
@@ -53,7 +54,7 @@ export function SiweButton() {
 
   if (sessionAddress) {
     return (
-      <button onClick={handleSignOut} className="text-caption text-muted underline hover:text-fg">
+      <button onClick={handleSignOut} className="text-caption font-normal text-muted underline hover:text-fg">
         Signed in as {sessionAddress.slice(0, 6)}…{sessionAddress.slice(-4)} — sign out
       </button>
     );
@@ -61,15 +62,10 @@ export function SiweButton() {
 
   return (
     <div className="flex flex-col items-end gap-1">
-      <button
-        onClick={handleSignIn}
-        disabled={loading}
-        style={{ height: 32 }}
-        className="border border-border px-4 text-body-sm font-medium transition-colors hover:border-border-hover disabled:opacity-30"
-      >
+      <Button variant="secondary" size="small" onClick={handleSignIn} disabled={loading}>
         {loading ? "Check your wallet…" : "Sign in with Ethereum"}
-      </button>
-      {error && <span className="text-caption text-error">{error}</span>}
+      </Button>
+      {error && <span className="text-caption font-normal text-error">{error}</span>}
     </div>
   );
 }

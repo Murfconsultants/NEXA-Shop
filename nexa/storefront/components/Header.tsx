@@ -7,10 +7,14 @@ import { SiweButton } from "./SiweButton";
 import { CartButton } from "./Cart";
 import { ThemeToggle } from "./ThemeToggle";
 
+// Nav chrome kept to plain text links (not bordered buttons) per
+// "Do keep UI chrome to an absolute minimum — navigation should nearly
+// disappear." — space-3 (16px) padding, border-b using Color Tertiary
+// (subtle dividers, borders).
 export function Header() {
   return (
     <header className="border-b border-border">
-      <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
+      <div className="mx-auto flex max-w-5xl items-center justify-between px-3 py-3">
         <Link href="/" className="relative block h-9 w-[130px]">
           <Image
             src="/nexa-logo.png"
@@ -21,8 +25,8 @@ export function Header() {
             className="object-contain object-left"
           />
         </Link>
-        <nav className="flex items-center gap-6">
-          <Link href="/account" className="text-body-sm text-muted transition-colors hover:text-fg">
+        <nav className="flex items-center gap-3">
+          <Link href="/account" className="text-body-sm font-normal text-muted transition-colors hover:text-fg">
             Orders
           </Link>
           <CartButton />
