@@ -21,11 +21,7 @@ export function Header() {
   return (
     <header className="border-b border-border">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-3 py-3">
-        <Link
-          href="/"
-          className="inline-flex shrink-0 items-center"
-          style={{ backgroundColor: "#0A0A0A", padding: "6px 10px" }}
-        >
+        <Link href="/" className="inline-flex shrink-0 items-center">
           <img src="/nexa-logo.png" alt="NEXA" width={100} height={28} />
         </Link>
         <nav className="flex items-center gap-3">

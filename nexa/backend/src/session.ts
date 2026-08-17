@@ -56,10 +56,18 @@ export async function createSession(res: Response, address: `0x${string}`): Prom
   }
 
   const signature = sign(sessionId);
+  const isProd = process.env.NODE_ENV === "production";
   res.cookie(SESSION_COOKIE, `${sessionId}.${signature}`, {
     httpOnly: true,
-    sameSite: "lax",
-    secure: process.env.NODE_ENV === "production",
+    // SameSite=None is required for the cookie to be sent on cross-site
+    // fetch() calls (the storefront and backend are on different Vercel
+    // domains in production) — Lax only sends cookies on top-level
+    // navigations, not JS-initiated requests, which silently broke every
+    // getSession()/getMyOrders() call after the initial sign-in. Browsers
+    // require Secure whenever SameSite=None is used. Local dev keeps Lax
+    // since localhost:3000/localhost:4000 count as same-site.
+    sameSite: isProd ? "none" : "lax",
+    secure: isProd,
     maxAge: SESSION_TTL_SECONDS * 1000,
   });
 }
@@ -75,7 +83,8 @@ export async function destroySession(req: Request, res: Response): Promise<void>
       memorySessions.delete(sessionId);
     }
   }
-  res.clearCookie(SESSION_COOKIE);
+  const isProd = process.env.NODE_ENV === "production";
+  res.clearCookie(SESSION_COOKIE, { sameSite: isProd ? "none" : "lax", secure: isProd });
 }
 
 export async function getSessionAddress(req: Request): Promise<`0x${string}` | null> {
