@@ -11,6 +11,7 @@ import { USDC_DECIMALS } from "@/lib/contracts";
 import { api, formatUsdc, type ApiOrder } from "@/lib/api";
 import { StatusChip, toneForOrderStatus } from "@/components/Chip";
 import { Button } from "@/components/Button";
+import { Skeleton } from "@/components/Skeleton";
 
 export default function DashboardPage() {
   const { address } = useAccount();
@@ -19,9 +20,6 @@ export default function DashboardPage() {
   const [orders, setOrders] = useState<ApiOrder[] | null>(null);
   const [autoPrompted, setAutoPrompted] = useState(false);
 
-  // Auto-trigger the SIWE signature prompt as soon as a wallet is connected
-  // with no existing session — connecting is the whole point of coming to
-  // this page, so asking again with a second click is friction, not safety.
   useEffect(() => {
     if (checkedSession && isConnected && !sessionAddress && !autoPrompted && !loading) {
       setAutoPrompted(true);
@@ -36,17 +34,17 @@ export default function DashboardPage() {
   }, [sessionAddress]);
 
   return (
-    <main className="mx-auto max-w-2xl px-3 py-6">
-      <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-h3">Dashboard</h1>
-        <Link href="/" className="text-body-sm font-normal text-muted underline hover:text-fg">
+    <main className="mx-auto max-w-3xl px-4 py-12">
+      <div className="mb-8 flex items-center justify-between">
+        <h1 className="text-h1">Your NEXA account</h1>
+        <Link href="/" className="text-small text-text-secondary underline hover:text-text">
           Back to shop
         </Link>
       </div>
 
       {!isConnected && (
-        <div className="flex flex-col items-start gap-3">
-          <p className="text-body-sm font-normal text-muted">
+        <div className="flex flex-col items-start gap-4 rounded-feature border border-border-strong bg-surface-elevated p-8">
+          <p className="text-body text-text-secondary">
             Connect your wallet to view your orders and account details.
           </p>
           <ConnectButton />
@@ -54,59 +52,65 @@ export default function DashboardPage() {
       )}
 
       {isConnected && !sessionAddress && (
-        <div className="flex flex-col items-start gap-3">
-          <p className="text-body-sm font-normal text-muted">
+        <div className="flex flex-col items-start gap-4 rounded-feature border border-border-strong bg-surface-elevated p-8">
+          <p className="text-body text-text-secondary">
             {loading ? "Check your wallet for a signature request…" : "Sign in with Ethereum to continue."}
           </p>
           {!loading && (
-            <Button variant="primary" size="medium" onClick={signIn}>
-              Sign in with Ethereum
-            </Button>
+            <Button variant="primary" onClick={signIn}>Sign in with Ethereum</Button>
           )}
-          {error && <span className="text-caption font-normal text-error">{error}</span>}
+          {error && <span className="text-small text-error">{error}</span>}
         </div>
       )}
 
       {sessionAddress && (
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col gap-3 border border-border-card bg-surface p-4">
-            <div className="flex items-center justify-between text-body-sm font-normal">
-              <span className="text-muted">Wallet</span>
-              <span className="font-mono text-mono tabular">
-                {(address ?? sessionAddress).slice(0, 6)}…{(address ?? sessionAddress).slice(-4)}
-              </span>
-            </div>
-            {balance !== undefined && (
-              <div className="flex items-center justify-between text-body-sm font-normal">
-                <span className="text-muted">Balance</span>
-                <span className="font-mono text-mono tabular">
-                  {formatUnits(balance, USDC_DECIMALS)} USDC
+        <div className="flex flex-col gap-8">
+          <div className="rounded-feature border border-border-strong bg-surface-elevated p-6">
+            <p className="mb-4 text-micro uppercase tracking-wide text-text-secondary">Wallet</p>
+            <div className="flex flex-col gap-3">
+              <div className="flex items-center justify-between">
+                <span className="text-small text-text-secondary">Address</span>
+                <span className="font-mono text-small tabular text-text">
+                  {(address ?? sessionAddress).slice(0, 6)}…{(address ?? sessionAddress).slice(-4)}
                 </span>
               </div>
-            )}
+              {balance !== undefined && (
+                <div className="flex items-center justify-between">
+                  <span className="text-small text-text-secondary">Balance</span>
+                  <span className="font-mono text-h3 tabular text-text">
+                    {formatUnits(balance, USDC_DECIMALS)} <span className="text-small text-text-secondary">USDC</span>
+                  </span>
+                </div>
+              )}
+            </div>
           </div>
 
           <div>
-            <h2 className="mb-3 text-caption font-normal uppercase tracking-wider text-muted">
-              Order history
-            </h2>
+            <h2 className="mb-4 text-h3">Orders</h2>
             {orders === null ? (
-              <p className="text-body-sm font-normal text-muted">Loading…</p>
+              <div className="flex flex-col gap-2">
+                <Skeleton className="h-[56px] w-full" />
+                <Skeleton className="h-[56px] w-full" />
+              </div>
             ) : orders.length === 0 ? (
-              <p className="text-body-sm font-normal text-muted">No orders yet.</p>
+              <div className="rounded-feature border border-border bg-surface p-8 text-center">
+                <p className="text-body text-text-secondary">No orders yet.</p>
+                <Link href="/#shop">
+                  <Button variant="secondary" size="small" className="mt-4">Explore products →</Button>
+                </Link>
+              </div>
             ) : (
-              <div className="flex flex-col">
+              <div className="flex flex-col gap-2">
                 {orders.map((order) => (
                   <Link
                     key={order.id}
                     href={`/checkout/${order.id}`}
-                    style={{ minHeight: 48 }}
-                    className="flex items-center justify-between gap-3 border-b border-divider-list px-3 text-body-sm font-normal transition-colors hover:bg-hover-bg"
+                    className="flex items-center justify-between gap-3 rounded-card border border-border bg-surface p-4 transition-colors hover:border-border-strong"
                   >
-                    <span className="font-mono text-mono tabular text-muted">
+                    <span className="font-mono text-micro tabular text-text-secondary">
                       {order.id.slice(0, 10)}…{order.id.slice(-6)}
                     </span>
-                    <span className="font-mono text-mono tabular">
+                    <span className="font-mono text-small tabular text-text">
                       {formatUsdc(order.amount)} USDC
                     </span>
                     <StatusChip label={order.status} tone={toneForOrderStatus(order.status)} />

@@ -1,21 +1,27 @@
-import Image from "next/image";
+import Link from "next/link";
 
-// "Surface Inverse (#0A0A0A): Dark sections, footer" — the doc names the
-// footer as an explicit Surface Inverse context, independent of the site's
-// light/dark toggle (which is this project's own addition, not in the doc).
-// So this uses the literal hexes directly rather than the --bg/--fg tokens,
-// which flip with the toggle — the footer stays dark even when the rest of
-// the site is in light mode.
 export function Footer() {
   return (
-    <footer style={{ backgroundColor: "#0A0A0A", color: "#FAFAFA" }}>
-      <div className="mx-auto flex max-w-5xl flex-col gap-3 px-3 py-5 text-caption sm:flex-row sm:items-center sm:justify-between">
-        <div className="relative h-5 w-[80px]">
-          <Image src="/nexa-logo.png" alt="NEXA" fill sizes="80px" className="object-contain object-left" />
+    <footer className="border-t border-border bg-surface">
+      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-12 sm:flex-row sm:items-start sm:justify-between">
+        <div className="flex flex-col gap-3">
+          <img src="/nexa-logo.png" alt="NEXA" width={84} height={24} />
+          <p className="max-w-xs text-small text-text-secondary">
+            Commerce, reimagined on Arc. Premium products, settled in USDC.
+          </p>
         </div>
-        <span className="font-mono" style={{ color: "#71717A" }}>
-          Arc Testnet · USDC · settled on-chain
-        </span>
+        <div className="flex gap-12 text-small">
+          <div className="flex flex-col gap-2">
+            <span className="text-micro uppercase tracking-wide text-text-secondary">Shop</span>
+            <Link href="/" className="text-text-secondary hover:text-text">Shop</Link>
+            <Link href="/arc" className="text-text-secondary hover:text-text">Arc</Link>
+          </div>
+          <div className="flex flex-col gap-2">
+            <span className="text-micro uppercase tracking-wide text-text-secondary">Network</span>
+            <span className="font-mono text-micro text-text-secondary">Arc Testnet</span>
+            <span className="font-mono text-micro text-text-secondary">USDC settlement</span>
+          </div>
+        </div>
       </div>
     </footer>
   );

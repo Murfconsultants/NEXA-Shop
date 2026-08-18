@@ -2,60 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
- * Every value below is copied verbatim from studioblank-design-system-DESIGN.md.
- * Light mode uses the doc's literal hexes. Dark mode is derived by swapping
- * only the two pairs the doc itself defines as opposites — Color Primary
- * (#0A0A0A) <-> Color Secondary (#FAFAFA), and Surface Base (#FAFAFA) <->
- * Surface Inverse (#0A0A0A) — "Surface Inverse: Dark sections, footer" is
- * the doc's own name for exactly this case. Every other value (borders,
- * Color Info, status colors) has no dark alternate specified in the doc, so
- * it stays byte-identical in both modes rather than inventing a new hex.
- */
+/* NEXA 2026 design tokens — obsidian/violet premium commerce system. */
 :root {
-  --bg: #fafafa;           /* Surface Base — page background */
-  --surface: #ffffff;      /* Card fill / Input default fill */
-  --fg: #0a0a0a;            /* Color Primary — primary text, actions */
-  --fg-inverse: #fafafa;    /* Color Secondary — text on a Primary-filled surface */
-  --border: #d4d4d8;        /* Color Tertiary — subtle dividers, borders */
-  --border-card: #e5e5e5;   /* Card border (distinct from Tertiary) */
-  --border-hover: #a1a1aa;  /* Input hover border / Filter Chip hover border */
-  --muted: #71717a;         /* Color Info */
-  --divider-list: #f4f4f5;  /* List divider */
-  --hover-bg: #f4f4f5;      /* List hover bg / Filter Chip hover fill / Archived Chip bg */
-  --disabled-border: #e5e5e5; /* Input disabled border / Checkbox & Radio disabled border */
-  --disabled-bg: #f4f4f5;     /* Input disabled fill */
-  --archived-text: #a1a1aa;   /* Status Chip Archived text */
-  --success: #16a34a;
+  --bg: #050507;
+  --surface: #0c0c11;
+  --surface-elevated: #12121a;
+  --primary: #7c3cff;
+  --highlight: #a855f7;
+  --success: #5ce17a;
   --warning: #ca8a04;
-  --error: #dc2626;
-}
-
-[data-theme="dark"] {
-  --bg: #0a0a0a;             /* Surface Inverse */
-  --surface: #0a0a0a;        /* no separate elevated-surface hex in the doc; cards are
-                                 distinguished by border only, per the doc's own Elevation
-                                 principle: "Depth is communicated exclusively through
-                                 layering, spacing, and border contrast." */
-  --fg: #fafafa;             /* Color Secondary */
-  --fg-inverse: #0a0a0a;     /* Color Primary */
-  /* everything else is unchanged — the doc gives no dark alternates for these */
+  --error: #f04848;
+  --text: #f7f7fa;
+  --text-secondary: #92929f;
+  --border: rgba(247, 247, 250, 0.08);
+  --border-strong: rgba(247, 247, 250, 0.16);
 }
 
 html,
 body {
   background-color: var(--bg);
-  color: var(--fg);
+  color: var(--text);
 }
 
 * {
   border-color: var(--border);
 }
 
-/* "Focus states use a 2px border offset rather than a box-shadow ring." */
 :focus-visible {
-  outline: 2px solid var(--fg);
+  outline: 2px solid var(--primary);
   outline-offset: 2px;
+  border-radius: 4px;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -71,4 +47,14 @@ body {
 
 .tabular {
   font-variant-numeric: tabular-nums;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--surface) 25%, var(--surface-elevated) 37%, var(--surface) 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
 }
